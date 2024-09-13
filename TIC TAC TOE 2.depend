@@ -1,9 +1,11 @@
 # depslib dependency file v1.0
-1726188656 source:/home/jecino/Documents/GIT REPOS/College-Homework/PROGRAMMING INTRODUCTION I/FINAL PROJECT/TIC TAC TOE 2/main.c
+1726267282 source:/home/jecino/Documents/GIT REPOS/College-Homework/PROGRAMMING INTRODUCTION I/FINAL PROJECT/TIC TAC TOE 2/main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
-	"draw.h"
+	"tictactoe.h"
 
 1726265179 /home/jecino/Documents/GIT REPOS/College-Homework/PROGRAMMING INTRODUCTION I/FINAL PROJECT/TIC TAC TOE 2/draw.h
+
+1726268942 /home/jecino/Documents/GIT REPOS/College-Homework/PROGRAMMING INTRODUCTION I/FINAL PROJECT/TIC TAC TOE 2/tictactoe.h
 
