@@ -3,43 +3,35 @@
 
 void printTable(int tictactoe[][9]){
 
-    for(int i = 0; i < 9; i+= 3){
+    //Will run the lines
+    for(int i = 0; i < 9; i += 3){
 
-        for(int k = 0; k < 9; k += 3){
+        //Will run inside the rows, 3 by 3
+        for(int j = 0; j <= 6; j+= 3){
 
-
-        }
-        for(int j = 0; j < 3; j++){
-            printf(" %d ", tictactoe[i][j]);
-
-            if(((j+1) % 3) == 0){
-                printf(" ");
+            //Printing the first 3 numbers of each row, + 3 each loop
+            for(int k = 0; k < 3; k++){
+                printf("%d ", tictactoe[i][k+j]);
             }
-        }
 
-        for(int j = 0; j < 3; j++){
-            printf(" %d ", tictactoe[i + 1][j]);
+            printf(" ");
 
-            if(((j+1) % 3) == 0){
-                printf(" ");
+            for(int k = 0; k < 3; k++){
+                printf("%d ", tictactoe[i+1][k+j]);
             }
-        }
 
-        for(int j = 0; j < 3; j++){
-            printf(" %d ", tictactoe[i + 2][j]);
+            printf(" ");
 
-            if(((j+1) % 3) == 0){
-                printf(" ");
+            for(int k = 0; k < 3; k++){
+                printf("%d ", tictactoe[i+2][k+j]);
             }
-        }
 
-
-
-        if(((i+1) % 3) == 0){
             printf("\n");
 
         }
+
         printf("\n");
+
     }
 }
 
