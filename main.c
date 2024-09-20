@@ -84,11 +84,11 @@ int main()
             printf("\nChoose where you will play: ");
             scanf(" %d", &gamemanager.choosedPos2);
 
-            system("clear");
-            printTable(tictactoe);
-
             //Changes the table depending in who are the player in the moment
             tictactoe[gamemanager.lastPos2][gamemanager.choosedPos2] = (r == 0) ? 0 : 1;
+
+            system("clear");
+            printTable(tictactoe);
 
             //Variable's update
             gamemanager.lastPos = gamemanager.choosedPos;
