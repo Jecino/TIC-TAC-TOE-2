@@ -38,22 +38,45 @@ int main()
             printTable(tictactoe);
 
             //Say who begins
-            if(r == 0){
+            if(r == 1){
                 printf("The \"X\" begins!\n");
             }
-            else if(r == 1){
+            else if(r == 0){
                 printf("The \"O\" begins!\n");
             }
 
             //Asking where to play, and storing it in the gamemanager
-            printf("\nChoose which tic tac toe you will play: ");
-            scanf(" %d", &gamemanager.choosedPos);
+            do{
+                printf("\nChoose where you will play: ");
+                scanf(" %d", &gamemanager.choosedPos);
+
+                if(gamemanager.choosedPos < 1 || gamemanager.choosedPos > 9){
+                    printf("That positon is not valid, choose another\n");
+                }
+
+                else{
+                    break;
+                }
+
+            } while(1);
 
             clear();
             printTable(tictactoe);
 
-            printf("\nChoose where you will play: ");
-            scanf(" %d", &gamemanager.choosedPos2);
+
+            do{
+                printf("\nChoose where you will play: ");
+                scanf(" %d", &gamemanager.choosedPos2);
+
+                if(gamemanager.choosedPos2 < 1 || gamemanager.choosedPos2 > 9){
+                    printf("That positon is not valid, choose another\n");
+                }
+
+                else{
+                    break;
+                }
+
+            } while(1);
 
             gamemanager.lastPos = gamemanager.choosedPos;
             gamemanager.lastPos2 = gamemanager.choosedPos2;
@@ -71,24 +94,45 @@ int main()
             printTable(tictactoe);
         }
 
-        //Checks if the last choosed small tictactoe is completed, if not runs
-        if (checkComplete(gamemanager.lastPos2, tictactoe) == 0){
+        //Checks if the last choosed small tictactoe is completed, if not: runs
+        if (checkComplete(gamemanager.lastPos2 - 1, tictactoe) == 0){
 
             //Say who begins
-            if(gamemanager.nextPlayer == 0){
+            if(gamemanager.nextPlayer == 1){
                 printf("The \"X\" plays!\n");
             }
-            else if(gamemanager.nextPlayer == 1){
+            else if(gamemanager.nextPlayer == 0){
                 printf("The \"O\" plays!\n");
             }
 
-            printf("\nChoose where you will play: ");
-            scanf(" %d", &gamemanager.choosedPos2);
+            printf("Current selected tictactoe:  %d\n", gamemanager.lastPos2);
+
+            //Asks where to play, and if is already played
+            do{
+                printf("\nChoose where you will play: ");
+                scanf(" %d", &gamemanager.choosedPos2);
+
+                if(tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] != 2){
+                    printf("That position have been already played, choose another\n");
+                }
+
+                if(gamemanager.choosedPos2 < 1 || gamemanager.choosedPos2 > 9){
+                    printf("That positon is not valid, choose another\n");
+                }
+
+                else{
+                    break;
+                }
+
+            } while(1);
+
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] = (r == 0) ? 0 : 1;
+            tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] = (gamemanager.nextPlayer == 0) ? 0 : 1;
 
             clear();
+
+            checkWinner(tictactoe, gamemanager.lastPos2 - 1);
 
             printTable(tictactoe);
 
