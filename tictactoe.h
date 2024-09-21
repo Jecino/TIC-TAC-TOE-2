@@ -71,4 +71,38 @@ void makeComplete(int id, int tictactoe[][9], int value){
     }
 }
 
+//Check if the tictactoe is captured
+
+void checkWinner(int tictactoe[][9], int id){
+    //Will run the lines checking if are full
+    for (int i = 0; i < 3; i++){
+        if(tictactoe[id][i] == 0 || tictactoe[id][i] == 1){
+
+        }
+        if(tictactoe[id][i+1] == 0 || tictactoe[id][i+1] == 1){
+
+        }
+        if(tictactoe[id][i+2] == 0 || tictactoe[id][i+2] == 1){
+
+        }
+
+
+    }
+
+}
+
+void clear(){
+    #ifdef _WIN32
+        system("cls");
+
+    #elif __linux__
+        system("clear");
+
+    #else
+        printf("Can't detect the OS");
+
+    #endif
+        return;
+}
+
 #endif

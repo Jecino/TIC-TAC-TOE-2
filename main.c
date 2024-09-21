@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 #include "tictactoe.h"
 
 int main()
@@ -48,7 +49,7 @@ int main()
             printf("\nChoose which tic tac toe you will play: ");
             scanf(" %d", &gamemanager.choosedPos);
 
-            system("clear");
+            clear();
             printTable(tictactoe);
 
             printf("\nChoose where you will play: ");
@@ -60,13 +61,13 @@ int main()
 
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.choosedPos][gamemanager.choosedPos2] = (r == 0) ? 0 : 1;
+            tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] = (r == 0) ? 0 : 1;
 
             if (r == 0){gamemanager.nextPlayer = 1;}
 
             else{gamemanager.nextPlayer = 0;}
 
-            system("clear");
+            clear();
             printTable(tictactoe);
         }
 
@@ -85,9 +86,10 @@ int main()
             scanf(" %d", &gamemanager.choosedPos2);
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.lastPos2][gamemanager.choosedPos2] = (r == 0) ? 0 : 1;
+            tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] = (r == 0) ? 0 : 1;
 
-            system("clear");
+            clear();
+
             printTable(tictactoe);
 
             //Variable's update
