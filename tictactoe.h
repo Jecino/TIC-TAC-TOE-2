@@ -72,7 +72,7 @@ void makeComplete(int id, int tictactoe[][9], int value){
 }
 
 //Check if the tictactoe is captured
-void checkWinner(int tictactoe[][9], int id){
+int checkWinner(int tictactoe[][9], int id){
     int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
 
     //Will run the rows and collums checking if are captured
@@ -112,11 +112,11 @@ void checkWinner(int tictactoe[][9], int id){
         //If the row or collum is complete, will call the makecomplete function
         if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
             makeComplete(id, tictactoe, 0);
-            break;
+            return 0;
         }
         else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
             makeComplete(id, tictactoe, 1);
-            break;
+            return 1;
         }
         else{
             //Clean the values for the next iteration
@@ -129,6 +129,66 @@ void checkWinner(int tictactoe[][9], int id){
         }
     }
 
+    return -1;
+
+}
+
+//Check big winning
+int checkBigWinner(int tictactoe[]){
+    int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
+
+    //Will run the rows and collums checking if are captured
+    for (int i = 0; i < 3; i++){
+        if(tictactoe[i*3] == 0 && tictactoe[i*3+1] == 0 && tictactoe[i*3+2] == 0){
+            zerosRow += 3;
+        }
+        else if(tictactoe[i*3] == 1 && tictactoe[i*3+1] == 1 && tictactoe[i*3+2] == 1){
+            onesRow += 3;
+        }
+
+        //Check the collums
+
+        if(tictactoe[i] == 0 && tictactoe[i+3] == 0 && tictactoe[i+6] == 0){
+            zerosCollum += 3;
+        }
+        else if(tictactoe[i] == 1 && tictactoe[i+3] == 1 && tictactoe[i+6] == 1){
+            onesCollum += 3;
+        }
+
+        //Checks the diagonals
+
+        if(tictactoe[0] == 0 && tictactoe[4] == 0 && tictactoe[8] == 0){
+            zerosDiag += 3;
+        }
+        else if(tictactoe[0] == 1 && tictactoe[4] == 1 && tictactoe[8] == 1){
+            onesDiag += 3;
+        }
+
+        if(tictactoe[2] == 0 && tictactoe[4] == 0 && tictactoe[6] == 0){
+            zerosDiag += 3;
+        }
+        else if(tictactoe[2] == 1 && tictactoe[4] == 1 && tictactoe[6] == 1){
+            onesDiag += 3;
+        }
+
+        //If the row or collum is complete, will call the makecomplete function
+        if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
+            return 0;
+        }
+        else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
+            return 1;
+        }
+        else{
+            //Clean the values for the next iteration
+            zerosRow = 0;
+            onesRow = 0;
+            zerosCollum = 0;
+            onesCollum = 0;
+            zerosDiag = 0;
+            onesDiag = 0;
+        }
+    }
+    return -1;
 }
 
 //clear the console in different OS

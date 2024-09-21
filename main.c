@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include "tictactoe.h"
 
 int main()
@@ -23,6 +22,7 @@ int main()
     //Gamemanager creation
     typedef struct{
         int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer;
+        int winned[9];
 
     } Tgamemanager;
 
@@ -224,6 +224,22 @@ int main()
         }
 
         //Check if the big tic tac toe is winned
+
+        for(int i = 0; i < 9; i++){
+            gamemanager.winned[i] = checkWinner(tictactoe, i);
+        }
+
+        if(checkBigWinner(gamemanager.winned)!= -1){
+            if(gamemanager.lastPlayer == 0){
+                printf("The \"O\" is the winner!\n");
+                break;
+            }
+            else{
+                printf("The \"X\" is the winner!\n");
+                break;
+            }
+
+        }
     }
 
 }
