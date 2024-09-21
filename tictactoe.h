@@ -73,14 +73,14 @@ void makeComplete(int id, int tictactoe[][9], int value){
 
 //Check if the tictactoe is captured
 void checkWinner(int tictactoe[][9], int id){
-    int zerosRow = 0, zerosCollum = 0, onesCollum = 0, onesRow = 0, zerosDiag = 0, onesDiag = 0;
+    int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
 
     //Will run the rows and collums checking if are captured
     for (int i = 0; i < 3; i++){
-        if(tictactoe[id][i] == 0 && tictactoe[id][i+1] == 0 && tictactoe[id][i+2] == 0){
+        if(tictactoe[id][i*3] == 0 && tictactoe[id][i*3+1] == 0 && tictactoe[id][i*3+2] == 0){
             zerosRow += 3;
         }
-        else if(tictactoe[id][i] == 1 && tictactoe[id][i+1] == 1 && tictactoe[id][i+2] == 1){
+        else if(tictactoe[id][i*3] == 1 && tictactoe[id][i*3+1] == 1 && tictactoe[id][i*3+2] == 1){
             onesRow += 3;
         }
 
