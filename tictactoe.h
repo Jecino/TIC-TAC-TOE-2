@@ -72,7 +72,7 @@ void makeComplete(int id, char tictactoe[][9], char value){
 }
 
 //Check if the tictactoe is captured
-int checkWinner(char tictactoe[][9], int id){
+char checkWinner(char tictactoe[][9], int id){
     int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
 
     //Will run the rows and collums checking if are captured
@@ -112,11 +112,11 @@ int checkWinner(char tictactoe[][9], int id){
         //If the row or collum is complete, will call the makecomplete function
         if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
             makeComplete(id, tictactoe, 'O');
-            return 0;
+            return 'O';
         }
         else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
             makeComplete(id, tictactoe, 'X');
-            return 1;
+            return 'X';
         }
         else{
             //Clean the values for the next iteration
@@ -129,7 +129,7 @@ int checkWinner(char tictactoe[][9], int id){
         }
     }
 
-    return -1;
+    return 'H';
 
 }
 
@@ -173,10 +173,10 @@ int checkBigWinner(char tictactoe[]){
 
         //If the row or collum is complete, will call the makecomplete function
         if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
-            return 0;
+            return 'O';
         }
         else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
-            return 1;
+            return 'X';
         }
         else{
             //Clean the values for the next iteration
@@ -188,7 +188,7 @@ int checkBigWinner(char tictactoe[]){
             onesDiag = 0;
         }
     }
-    return -1;
+    return 'H';
 }
 
 //clear the console in different OS

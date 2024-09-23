@@ -229,7 +229,7 @@ int main()
             gamemanager.winned[i] = checkWinner(tictactoe, i);
         }
 
-        if(checkBigWinner(gamemanager.winned)!= -1){
+        if(checkBigWinner(gamemanager.winned)!= 'H'){
             if(gamemanager.lastPlayer == 0){
                 printf("The \"O\" is the winner!\n");
                 break;
