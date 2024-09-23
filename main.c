@@ -6,12 +6,12 @@
 int main()
 {
     //Variables
-    int tictactoe[9][9];
+    char tictactoe[9][9];
 
     //Fill the array for better view
     for(int k = 0; k < 9; k++){
         for(int s = 0; s < 9; s++){
-            tictactoe[k][s] = 2;
+            tictactoe[k][s] = 'H';
         }
     }
 
@@ -22,7 +22,7 @@ int main()
     //Gamemanager creation
     typedef struct{
         int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer;
-        int winned[9];
+        char winned[9];
 
     } Tgamemanager;
 
@@ -87,7 +87,7 @@ int main()
 
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] = (r == 0) ? 0 : 1;
+            tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] = (r == 0) ? 'O' : 'X';
 
             if (r == 0){gamemanager.nextPlayer = 1;}
 
@@ -115,7 +115,7 @@ int main()
                 printf("\nChoose where you will play: ");
                 scanf(" %d", &gamemanager.choosedPos2);
 
-                if(tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] != 2){
+                if(tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] != 'H'){
                     printf("That position have been already played, choose another\n");
                     continue;
                 }
@@ -131,7 +131,7 @@ int main()
             } while(1);
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] = (gamemanager.nextPlayer == 0) ? 0 : 1;
+            tictactoe[gamemanager.lastPos2 - 1][gamemanager.choosedPos2 - 1] = (gamemanager.nextPlayer == 0) ? 'O' : 'X';
 
             clear();
 
@@ -190,7 +190,7 @@ int main()
                 printf("\nChoose where you will play: ");
                 scanf(" %d", &gamemanager.choosedPos2);
 
-                if(tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] != 2){
+                if(tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] != 'H'){
                     printf("That position have been already played, choose another\n");
                 }
 
@@ -205,7 +205,7 @@ int main()
             } while(1);
 
             //Changes the table depending in who are the player in the moment
-            tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] = (gamemanager.nextPlayer == 0) ? 0 : 1;
+            tictactoe[gamemanager.choosedPos - 1][gamemanager.choosedPos2 - 1] = (gamemanager.nextPlayer == 0) ? 'O' : 'X';
 
             clear();
 
@@ -234,8 +234,12 @@ int main()
                 printf("The \"O\" is the winner!\n");
                 break;
             }
-            else{
+            else if (gamemanager.lastPlayer == 1){
                 printf("The \"X\" is the winner!\n");
+                break;
+            }
+            else{
+                printf("It's a draw!\n");
                 break;
             }
 
