@@ -1,6 +1,31 @@
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 
+//Gamemanager creation
+typedef struct{
+    int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer;
+    char winned[9];
+
+} Tgamemanager;
+
+//Table declaration
+char tictactoe[9][9];
+
+//clear the console in different OS
+void clear(){
+    #ifdef _WIN32
+        system("cls");
+
+    #elif __linux__
+        system("clear");
+
+    #else
+        printf("Can't detect the OS");
+
+    #endif
+        return;
+}
+
 //Draw the game
 void printTable(char tictactoe[][9]){
 
@@ -38,7 +63,8 @@ void printTable(char tictactoe[][9]){
 
 //Checks if the small tictactoe already winned or its a draw
 int checkComplete(int id, char tictactoe[][9]){
-int zeros = 0, ones = 0, twos = 0;
+    int zeros = 0, ones = 0, twos = 0;
+
     for(int i = 0; i < 9; i++){
         if (tictactoe[id][i] == 'O'){
             zeros ++;
@@ -52,7 +78,7 @@ int zeros = 0, ones = 0, twos = 0;
     }
 
     for(int i = 0; i < 9; i++){
-        if (tictactoe[id][i] == 'H'){
+        if (tictactoe[id][i] == '-'){
             twos++;
         }
     }
@@ -129,12 +155,12 @@ char checkWinner(char tictactoe[][9], int id){
         }
     }
 
-    return 'H';
+    return '-';
 
 }
 
 //Check big winning
-int checkBigWinner(char tictactoe[]){
+char checkBigWinner(char tictactoe[]){
     int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
 
     //Will run the rows and collums checking if are captured
@@ -188,22 +214,119 @@ int checkBigWinner(char tictactoe[]){
             onesDiag = 0;
         }
     }
-    return 'H';
+    return '-';
 }
 
-//clear the console in different OS
-void clear(){
-    #ifdef _WIN32
-        system("cls");
+void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe){
+    int choosedBigTicTacToe = 0;
+    //Say who begins
+    //If is the first play, makes the random number the next player
+    if(gamemanager -> lastPos == -1){
+        clear();
+        printTable(tictactoe);
+        gamemanager -> nextPlayer = actualPlayer;
 
-    #elif __linux__
-        system("clear");
+        if(gamemanager -> nextPlayer == 1){
+            printf("The \"X\" begins!\n");
+        }
+        else if(gamemanager -> nextPlayer == 0){
+            printf("The \"O\" begins!\n");
+        }
+    }
 
-    #else
-        printf("Can't detect the OS");
+    else{
+        if(gamemanager -> nextPlayer == 1){
+            printf("The \"X\" plays!\n");
+        }
+        else if(gamemanager -> nextPlayer == 0){
+            printf("The \"O\" plays!\n");
+        }
+    }
 
-    #endif
-        return;
+    //Asks where play in the big tac toe if needed
+    if(ChooseBigTicTacToe == 1){
+        do{
+            printf("\nChoose where you will play (in the big tic tac toe): ");
+            scanf(" %d", &gamemanager -> choosedPos);
+
+            if(checkComplete(gamemanager -> choosedPos - 1, tictactoe) != 0){
+                printf("That tic tac toe is not avaliable, choose another\n");
+                continue;
+            }
+
+            if(gamemanager -> choosedPos < 1 || gamemanager -> choosedPos > 9){
+                printf("That positon is not valid, choose another\n");
+            }
+
+            else{
+                choosedBigTicTacToe = 1;
+                break;
+            }
+
+        } while(1);
+    }
+
+    if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
+        printf("Current selected tictactoe:  %d\n", gamemanager -> choosedPos);
+    }
+    else{
+        printf("Current selected tictactoe:  %d\n", gamemanager -> lastPos2);
+    }
+
+    //Asks where to play, and ckeck if is already played
+    do{
+        printf("\nChoose where you will play: ");
+        scanf(" %d", &gamemanager -> choosedPos2);
+
+        if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
+            if(tictactoe[gamemanager -> choosedPos - 1][gamemanager -> choosedPos2 - 1] != '-'){
+                printf("That position have been already played, choose another\n");
+                continue;
+            }
+        }
+
+        else{
+            if(tictactoe[gamemanager -> lastPos2 - 1][gamemanager -> choosedPos2 - 1] != '-'){
+                printf("That position have been already played, choose another\n");
+                continue;
+            }
+        }
+
+        if(gamemanager -> choosedPos2 < 1 || gamemanager -> choosedPos2 > 9){
+            printf("That positon is not valid, choose another\n");
+        }
+
+        else{
+            break;
+        }
+
+    } while(1);
+
+    //Changes the table depending in who are the player in the moment
+    if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
+        tictactoe[gamemanager -> choosedPos - 1][gamemanager -> choosedPos2 - 1] = (gamemanager -> nextPlayer == 0) ? 'O' : 'X';
+    }
+    else{
+        tictactoe[gamemanager -> lastPos2 - 1][gamemanager -> choosedPos2 - 1] = (gamemanager -> nextPlayer == 0) ? 'O' : 'X';
+    }
+
+    clear();
+
+    if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
+        checkWinner(tictactoe, gamemanager -> choosedPos2 - 1);
+    }
+    else{
+        checkWinner(tictactoe, gamemanager -> lastPos2 - 1);
+    }
+
+    printTable(tictactoe);
+
+    //Variable's update
+    gamemanager -> lastPlayer = gamemanager -> nextPlayer;
+    gamemanager -> nextPlayer = (gamemanager -> lastPlayer == 0) ? 1 : 0;
+
+    gamemanager -> lastPos = gamemanager -> choosedPos;
+    gamemanager -> lastPos2 = gamemanager -> choosedPos2;
 }
 
 #endif
