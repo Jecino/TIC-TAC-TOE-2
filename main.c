@@ -6,7 +6,7 @@
 int main()
 {
     //Variables
-
+    int rsp = 0;
     //Fill the table for better view
     for(int k = 0; k < 9; k++){
         for(int s = 0; s < 9; s++){
@@ -20,6 +20,35 @@ int main()
 
     Tgamemanager gamemanager;
     gamemanager.lastPos = -1;
+
+    do{
+        printf("Welcome to the Tic Tac Toe 2!\n\n");
+        printf("1. New Game\n2. Continue\n3. Exit\n");
+        scanf(" %d", &rsp);
+
+        switch(rsp){
+            case 1:
+                printf("Creating the table...\n");
+                sleep(1);
+                rsp = -1;
+                break;
+
+            case 2:
+                printf("In development\n");
+                sleep(1);
+                break;
+
+            case 3:
+                printf("Bye :D\n");
+                return;
+
+            default:
+                printf("Could not recognize your option, try again\n");
+                break;
+        }
+
+        clear();
+    } while(rsp != -1);
 
     //gameloop
     while(1){

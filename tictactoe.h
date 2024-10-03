@@ -313,7 +313,7 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     clear();
 
     if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
-        checkWinner(tictactoe, gamemanager -> choosedPos2 - 1);
+        checkWinner(tictactoe, gamemanager -> choosedPos - 1);
     }
     else{
         checkWinner(tictactoe, gamemanager -> lastPos2 - 1);
