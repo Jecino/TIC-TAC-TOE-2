@@ -329,4 +329,52 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     gamemanager -> lastPos2 = gamemanager -> choosedPos2;
 }
 
+void saveGame(Tgamemanager gamemanager, char tictactoe[][9]){
+    FILE* save;
+    save = fopen("save.tic", "w");
+
+    if(save == NULL){
+        printf("Can't save the game, try again\n");
+        return;
+    }
+
+    for(int i = 0; i < 9; i ++){
+        for(int j = 0; j < 9; j++){
+            fprintf(save, "%c", tictactoe[i][j]);
+        }
+        fprintf(save, "\n");
+    }
+
+    fprintf(save, "%d%d%d%d%d%d\n", gamemanager.choosedPos2, gamemanager.choosedPos, gamemanager.lastPlayer, gamemanager.lastPos2, gamemanager.lastPos, gamemanager.nextPlayer);
+
+    for(int i = 0; i < 9; i++){
+        fprintf(save, "%c", gamemanager.winned[i]);
+    }
+
+    fclose(save);
+}
+
+void loadGame(FILE* load, Tgamemanager *gamemanager, char tictactoe[][9]){
+
+    if(load == NULL){
+        printf("Can't load the game, try again\n");
+        return;
+    }
+
+    for(int i = 0; i < 9; i ++){
+        for(int j = 0; j < 9; j++){
+            fscanf(load, "%c", &tictactoe[i][j]);
+        }
+        fscanf(load, "\n");
+    }
+
+    fscanf(load, "%d%d%d%d%d%d\n", &gamemanager -> choosedPos2, &gamemanager -> choosedPos, &gamemanager -> lastPlayer, &gamemanager -> lastPos2, &gamemanager -> lastPos, &gamemanager -> nextPlayer);
+
+    for(int i = 0; i < 9; i++){
+        fscanf(load, "%c", &gamemanager -> winned[i]);
+    }
+
+    fclose(load);
+}
+
 #endif

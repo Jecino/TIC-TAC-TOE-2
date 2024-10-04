@@ -7,6 +7,7 @@ int main()
 {
     //Variables
     int rsp = 0;
+
     //Fill the table for better view
     for(int k = 0; k < 9; k++){
         for(int s = 0; s < 9; s++){
@@ -23,7 +24,7 @@ int main()
 
     do{
         printf("Welcome to the Tic Tac Toe 2!\n\n");
-        printf("1. New Game\n2. Continue\n3. Exit\n");
+        printf("1. New Game\n2. Continue\n3. How to play\n4. Exit\n");
         scanf(" %d", &rsp);
 
         switch(rsp){
@@ -34,11 +35,23 @@ int main()
                 break;
 
             case 2:
-                printf("In development\n");
+                FILE* save;
+                save = fopen("save.tic", "r");
+                printf("\nLoading the save\n");
+
+                loadGame(save, &gamemanager, &tictactoe);
+
                 sleep(1);
+
+                rsp = -1;
+
                 break;
 
             case 3:
+
+                break;
+
+            case 4:
                 printf("Bye :D\n");
                 return;
 
@@ -76,14 +89,17 @@ int main()
         if(checkBigWinner(gamemanager.winned)!= '-'){
             if(gamemanager.lastPlayer == 0){
                 printf("The \"O\" is the winner!\n");
+                saveGame(gamemanager, tictactoe);
                 break;
             }
             else if (gamemanager.lastPlayer == 1){
                 printf("The \"X\" is the winner!\n");
+                saveGame(gamemanager, tictactoe);
                 break;
             }
             else{
                 printf("It's a draw!\n");
+                saveGame(gamemanager, tictactoe);
                 break;
             }
 
