@@ -3,7 +3,7 @@
 
 //Gamemanager creation
 typedef struct{
-    int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer;
+    int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer, exited;
     char winned[9];
 
 } Tgamemanager;
@@ -231,8 +231,6 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     //Say who begins
     //If is the first play, makes the random number the next player
     if(gamemanager -> lastPos == -1){
-        clear();
-        printTable(tictactoe);
         gamemanager -> nextPlayer = actualPlayer;
 
         if(gamemanager -> nextPlayer == 1){
@@ -256,7 +254,14 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     if(ChooseBigTicTacToe == 1){
         do{
             printf("\nChoose where you will play (in the big tic tac toe): ");
+            int tempPos = gamemanager -> choosedPos;
             scanf(" %d", &gamemanager -> choosedPos);
+
+            if(gamemanager -> choosedPos == 0){
+                gamemanager -> choosedPos = tempPos;
+                gamemanager -> exited = 1;
+                return;
+            }
 
             if(checkComplete(gamemanager -> choosedPos - 1, tictactoe) != 0){
                 printf("That tic tac toe is not avaliable, choose another\n");
@@ -285,7 +290,14 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     //Asks where to play, and ckeck if is already played
     do{
         printf("\nChoose where you will play: ");
+        int tempPos2 = gamemanager -> choosedPos2;
         scanf(" %d", &gamemanager -> choosedPos2);
+
+        if(gamemanager -> choosedPos2 == 0){
+            gamemanager -> choosedPos2 = tempPos2;
+            gamemanager -> exited = 1;
+            return;
+        }
 
         if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
             if(tictactoe[gamemanager -> choosedPos - 1][gamemanager -> choosedPos2 - 1] != '-'){
@@ -328,8 +340,6 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
         checkWinner(tictactoe, gamemanager -> lastPos2 - 1);
     }
 
-    printTable(tictactoe);
-
     //Variable's update
     gamemanager -> lastPlayer = gamemanager -> nextPlayer;
     gamemanager -> nextPlayer = (gamemanager -> lastPlayer == 0) ? 1 : 0;
@@ -354,7 +364,7 @@ void saveGame(Tgamemanager gamemanager, char tictactoe[][9]){
         fprintf(save, "\n");
     }
 
-    fprintf(save, "%d%d%d%d%d%d\n", gamemanager.choosedPos2, gamemanager.choosedPos, gamemanager.lastPlayer, gamemanager.lastPos2, gamemanager.lastPos, gamemanager.nextPlayer);
+    fprintf(save, "%d %d %d %d %d %d\n", gamemanager.choosedPos2, gamemanager.choosedPos, gamemanager.lastPlayer, gamemanager.lastPos2, gamemanager.lastPos, gamemanager.nextPlayer);
 
     for(int i = 0; i < 9; i++){
         fprintf(save, "%c", gamemanager.winned[i]);
@@ -377,7 +387,7 @@ void loadGame(FILE* load, Tgamemanager *gamemanager, char tictactoe[][9]){
         fscanf(load, "\n");
     }
 
-    fscanf(load, "%d%d%d%d%d%d\n", &gamemanager -> choosedPos2, &gamemanager -> choosedPos, &gamemanager -> lastPlayer, &gamemanager -> lastPos2, &gamemanager -> lastPos, &gamemanager -> nextPlayer);
+    fscanf(load, "%d %d %d %d %d %d\n", &gamemanager -> choosedPos2, &gamemanager -> choosedPos, &gamemanager -> lastPlayer, &gamemanager -> lastPos2, &gamemanager -> lastPos, &gamemanager -> nextPlayer);
 
     for(int i = 0; i < 9; i++){
         fscanf(load, "%c", &gamemanager -> winned[i]);
@@ -386,7 +396,7 @@ void loadGame(FILE* load, Tgamemanager *gamemanager, char tictactoe[][9]){
     fclose(load);
 }
 
-void tutorial(char tictactoe[][9]){
+void tutorial(){
     char rsp;
     do{
         clear();

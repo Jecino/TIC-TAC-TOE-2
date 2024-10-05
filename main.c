@@ -7,7 +7,7 @@ int main()
 {
     //Variables
     int rsp = 0;
-
+    char exitingrsp;
     FILE* save;
 
     initializeTable(tictactoe, '-');
@@ -17,7 +17,6 @@ int main()
     int r = rand() % 2;
 
     Tgamemanager gamemanager;
-    gamemanager.lastPos = -1;
 
     do{
         printf("Welcome to the Tic Tac Toe 2!\n\n");
@@ -27,6 +26,7 @@ int main()
         switch(rsp){
             case 1:
                 printf("Creating the table...\n");
+                gamemanager.lastPos = -1;
                 sleep(1);
                 rsp = -1;
                 break;
@@ -44,7 +44,7 @@ int main()
                 break;
 
             case 3:
-                tutorial(tictactoe);
+                tutorial();
                 break;
 
             case 4:
@@ -61,6 +61,10 @@ int main()
 
     //gameloop
     while(1){
+
+        clear();
+        printTable(tictactoe);
+
         //Enter here if is the fist play
         if (gamemanager.lastPos == -1){
             jogada(&gamemanager, r, 1);
@@ -85,20 +89,31 @@ int main()
         if(checkBigWinner(gamemanager.winned)!= '-'){
             if(gamemanager.lastPlayer == 0){
                 printf("The \"O\" is the winner!\n");
-                saveGame(gamemanager, tictactoe);
                 break;
             }
             else if (gamemanager.lastPlayer == 1){
                 printf("The \"X\" is the winner!\n");
-                saveGame(gamemanager, tictactoe);
                 break;
             }
             else{
                 printf("It's a draw!\n");
-                saveGame(gamemanager, tictactoe);
                 break;
             }
 
+        }
+
+        if(gamemanager.exited == 1){
+            clear();
+            printf("\nYou want to save before exit? (y/n)\n");
+            scanf(" %c", &exitingrsp);
+
+            if(exitingrsp == 'y'){
+                saveGame(gamemanager, tictactoe);
+                printf("\nGame saved\n");
+            }
+
+            printf("\nBye :D!\n");
+            break;
         }
     }
 
