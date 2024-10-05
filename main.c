@@ -8,12 +8,9 @@ int main()
     //Variables
     int rsp = 0;
 
-    //Fill the table for better view
-    for(int k = 0; k < 9; k++){
-        for(int s = 0; s < 9; s++){
-            tictactoe[k][s] = '-';
-        }
-    }
+    FILE* save;
+
+    initializeTable(tictactoe, '-');
 
     //Random int for choose who begins
     srand(time(NULL));
@@ -35,7 +32,6 @@ int main()
                 break;
 
             case 2:
-                FILE* save;
                 save = fopen("save.tic", "r");
                 printf("\nLoading the save\n");
 
@@ -48,7 +44,7 @@ int main()
                 break;
 
             case 3:
-
+                tutorial(tictactoe);
                 break;
 
             case 4:

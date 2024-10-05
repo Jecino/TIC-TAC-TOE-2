@@ -1,0 +1,75 @@
+HOW TO PLAY
+
+[BASIC]
+
+This is the table of the game:
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+This game contains tic tac toe's inside a bigger one. To
+win you need to win the small one's, with that you win
+a square in the bigger. Like that:
+
+X - -  - - -  - - - | X X -  - - -  - - - | X X X  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+- - -  - - -  - - - | - - -  - - -  - - - | - - -  - - -  - - -
+
+X X X  - - -  - - - It will get like that
+X X X  - - -  - - - when someone win in the
+X X X  - - -  - - - small one.
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+And winning in the bigger will finalize the game!
+
+[PLAYING]
+
+To play, you have to select between between 1 and 9. For example, if choosed 5 
+(while selected the tic tac toe 1) you will play in the middle of the first.
+
+(If you select "0" you will get to the exit menu)
+
+- - -  - - -  - - -
+- X -  - - -  - - -
+- - -  - - -  - - -
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+- - -  - - -  - - -
+- - -  - - -  - - -
+- - -  - - -  - - -
+
+[SPECIFIC RULES]
+
+Where one of the players plays is where the other will play 
+in the bigger one. For example, if played in the middle of the 
+fourth, the next will have to play in the fourth tic tac toe.
+
+If the next player have to play in a tic tac toe that is already winned
+or its in a draw. He will be able to select where to play in the bigger one.

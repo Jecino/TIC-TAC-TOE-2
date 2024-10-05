@@ -11,6 +11,15 @@ typedef struct{
 //Table declaration
 char tictactoe[9][9];
 
+void initializeTable(char tictactoe[][9], char value){
+    //Fill the table for better view
+    for(int k = 0; k < 9; k++){
+        for(int s = 0; s < 9; s++){
+            tictactoe[k][s] = value;
+        }
+    }
+}
+
 //clear the console in different OS
 void clear(){
     #ifdef _WIN32
@@ -375,6 +384,32 @@ void loadGame(FILE* load, Tgamemanager *gamemanager, char tictactoe[][9]){
     }
 
     fclose(load);
+}
+
+void tutorial(char tictactoe[][9]){
+    char rsp;
+    do{
+        clear();
+        char line[150];
+
+        FILE* tutorial;
+        tutorial = fopen("tutorial.txt", "r");
+
+        if(tutorial == NULL){
+            printf("Can't open the tutorial file, try again");
+            return;
+        }
+
+        while(fgets(line, 150, tutorial) != NULL){
+            printf("%s", line);
+        }
+
+
+        fclose(tutorial);
+
+        printf("\n\nWish going back to the menu? (y/n): ");
+        scanf(" %c", &rsp);
+    } while(rsp != 'y');
 }
 
 #endif
