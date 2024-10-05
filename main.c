@@ -6,7 +6,7 @@
 int main()
 {
     //Variables
-    int rsp = 0;
+    char rsp = '0';
     char exitingrsp;
     FILE* save;
 
@@ -21,17 +21,17 @@ int main()
     do{
         printf("Welcome to the Tic Tac Toe 2!\n\n");
         printf("1. New Game\n2. Continue\n3. How to play\n4. Exit\n");
-        scanf(" %d", &rsp);
+        scanf(" %c", &rsp);
 
         switch(rsp){
-            case 1:
+            case '1':
                 printf("Creating the table...\n");
                 gamemanager.lastPos = -1;
                 sleep(1);
-                rsp = -1;
+                rsp = '0';
                 break;
 
-            case 2:
+            case '2':
                 save = fopen("save.tic", "r");
                 printf("\nLoading the save\n");
 
@@ -39,25 +39,26 @@ int main()
 
                 sleep(1);
 
-                rsp = -1;
+                rsp = '0';
 
                 break;
 
-            case 3:
+            case '3':
                 tutorial();
                 break;
 
-            case 4:
+            case '4':
                 printf("Bye :D\n");
                 return;
 
             default:
                 printf("Could not recognize your option, try again\n");
+                sleep(1);
                 break;
         }
 
         clear();
-    } while(rsp != -1);
+    } while(rsp != '0');
 
     //gameloop
     while(1){
@@ -103,14 +104,17 @@ int main()
         }
 
         if(gamemanager.exited == 1){
-            clear();
-            printf("\nYou want to save before exit? (y/n)\n");
-            scanf(" %c", &exitingrsp);
 
-            if(exitingrsp == 'y'){
-                saveGame(gamemanager, tictactoe);
-                printf("\nGame saved\n");
-            }
+            do{
+                clear();
+                printf("\nYou want to save before exit? (y/n)\n");
+                scanf(" %c", &exitingrsp);
+
+                if(exitingrsp == 'y'){
+                    saveGame(gamemanager, tictactoe);
+                    printf("\nGame saved\n");
+                }
+            } while(exitingrsp != 'y' || exitingrsp != 'n');
 
             printf("\nBye :D!\n");
             break;

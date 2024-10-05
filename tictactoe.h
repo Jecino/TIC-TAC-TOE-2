@@ -255,7 +255,10 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
         do{
             printf("\nChoose where you will play (in the big tic tac toe): ");
             int tempPos = gamemanager -> choosedPos;
-            scanf(" %d", &gamemanager -> choosedPos);
+            while(scanf(" %d", &gamemanager -> choosedPos) != 1){
+                printf("\nEnter a valid number");
+                getchar();
+            }
 
             if(gamemanager -> choosedPos == 0){
                 gamemanager -> choosedPos = tempPos;
@@ -291,7 +294,10 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     do{
         printf("\nChoose where you will play: ");
         int tempPos2 = gamemanager -> choosedPos2;
-        scanf(" %d", &gamemanager -> choosedPos2);
+        while(scanf(" %d", &gamemanager -> choosedPos2) != 1){
+                printf("\nEnter a valid number: ");
+                getchar();
+        }
 
         if(gamemanager -> choosedPos2 == 0){
             gamemanager -> choosedPos2 = tempPos2;
