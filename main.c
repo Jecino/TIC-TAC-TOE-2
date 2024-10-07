@@ -114,7 +114,7 @@ int main()
                     saveGame(gamemanager, tictactoe);
                     printf("\nGame saved\n");
                 }
-            } while(exitingrsp != 'y' || exitingrsp != 'n');
+            } while(exitingrsp != 'y' && exitingrsp != 'n');
 
             printf("\nBye :D!\n");
             break;

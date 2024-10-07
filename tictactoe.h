@@ -425,7 +425,7 @@ void tutorial(){
 
         printf("\n\nWish going back to the menu? (y/n): ");
         scanf(" %c", &rsp);
-    } while(rsp != 'y');
+    } while(rsp != 'y' && rsp!= 'n');
 }
 
 #endif
