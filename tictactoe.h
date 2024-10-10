@@ -20,6 +20,22 @@ void initializeTable(char tictactoe[][9], char value){
     }
 }
 
+int checkMoves(char tictactoe[][9]){
+    int blocked = 0;
+
+    for(int i = 0; i < 9; i++){
+        if (checkComplete(i, tictactoe) == 1){
+            blocked += 1;
+        }
+    }
+
+    if(blocked == 9){
+        return 0;
+    }
+
+    return 1;
+}
+
 //clear the console in different OS
 void clear(){
     #ifdef _WIN32
@@ -206,7 +222,7 @@ char checkBigWinner(char tictactoe[]){
             onesDiag += 3;
         }
 
-        //If the row or collum is complete, will call the makecomplete function
+        //If the row or collum is complete
         if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
             return 'O';
         }

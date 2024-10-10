@@ -87,20 +87,26 @@ int main()
             gamemanager.winned[i] = checkWinner(tictactoe, i);
         }
 
+        if (checkMoves(tictactoe) == 0){
+            clear();
+            printTable(tictactoe);
+            printf("It's a draw!\n");
+            break;
+        }
+
         if(checkBigWinner(gamemanager.winned)!= '-'){
             if(gamemanager.lastPlayer == 0){
+                clear();
+                printTable(tictactoe);
                 printf("The \"O\" is the winner!\n");
                 break;
             }
             else if (gamemanager.lastPlayer == 1){
+                clear();
+                printTable(tictactoe);
                 printf("The \"X\" is the winner!\n");
                 break;
             }
-            else{
-                printf("It's a draw!\n");
-                break;
-            }
-
         }
 
         if(gamemanager.exited == 1){
