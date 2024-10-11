@@ -5,6 +5,7 @@
 typedef struct{
     int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer, exited;
     char winned[9];
+    char PC;
 
 } Tgamemanager;
 
@@ -242,6 +243,79 @@ char checkBigWinner(char tictactoe[]){
     return '-';
 }
 
+int minmax(char tictactoe[][9], char winned[9], int lastplayed, char PC, int ismax, int deep){
+    int best = 0;
+    char player = (PC == 'O') ? 'X' : 'O';
+    int score = 0;
+
+    score = (checkWinner(tictactoe, lastplayed) == PC) ? -10 : 10;
+    score += checkBigWinner(winned) == PC ? -10 : 10;
+
+    if(score == 20){
+        return score - deep;
+    }
+
+    if(score == -20){
+        return score + deep;
+    }
+
+    if(checkMoves(tictactoe) == 0){
+        return 0;
+    }
+
+    if(ismax){
+        best = -1000;
+        for(int i = 0; i < 9; i++){
+             if(winned[lastplayed] != '-' || tictactoe[lastplayed][i] == '-'){
+                tictactoe[lastplayed][i] = player;
+                best = best > minmax(tictactoe, winned, i, PC, 0, deep + 1) ? best : minmax(tictactoe, winned, i, PC, 0, deep + 1);
+                tictactoe[lastplayed][i] = '-';
+            }
+        }
+        return best;
+    }
+
+
+    else{
+        best = 1000;
+        for(int i = 0; i < 9; i++){
+            if(winned[lastplayed] != '-' || tictactoe[lastplayed][i] == '-'){
+                tictactoe[lastplayed][i] = PC;
+                best = best < minmax(tictactoe, winned, i, PC, 0, deep + 1) ? best : minmax(tictactoe, winned, i, PC, 1, deep + 1);
+                tictactoe[lastplayed][i] = '-';
+            }
+        }
+        return best;
+    }
+}
+
+int bestplay(char tictactoe[][9], char winned[9], char player){
+    int bestvalue = -1000, playvalue = 0;
+    int bestplace = -1;
+
+    for(int i = 0; i < 9; i++){
+
+        if(winned[i] != '-'){
+            continue;
+        }
+
+        for(int j = 0; j < 9; j++){
+            if(tictactoe[i][j] == '-'){
+                tictactoe[i][j] = player;
+                playvalue = minmax(tictactoe, winned, j, player, 0, 0);
+                tictactoe[i][j] = '-';
+
+                if(playvalue > bestvalue){
+                    bestplace = j;
+                    bestvalue = playvalue;
+                }
+            }
+        }
+    }
+
+    return bestplace + 1;
+}
+
 void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe){
     int choosedBigTicTacToe = 0;
     //Say who begins
@@ -269,12 +343,21 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     //Asks where play in the big tac toe if needed
     if(ChooseBigTicTacToe == 1){
         do{
-            printf("\nChoose where you will play (in the big tic tac toe): ");
             int tempPos = gamemanager -> choosedPos;
-            while(scanf(" %d", &gamemanager -> choosedPos) != 1){
-                printf("\nEnter a valid number");
-                getchar();
+            if(gamemanager ->nextPlayer != gamemanager->PC){
+                printf("\nChoose where you will play (in the big tic tac toe): ");
+
+
+                while(scanf(" %d", &gamemanager -> choosedPos) != 1){
+                    printf("\nEnter a valid number");
+                    getchar();
+                }
             }
+
+            else{
+                gamemanager -> choosedPos = bestplay(tictactoe, gamemanager->winned, (gamemanager->PC == 1) ? 'X' : 'O');
+            }
+
 
             if(gamemanager -> choosedPos == 0){
                 gamemanager -> choosedPos = tempPos;
@@ -308,11 +391,19 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
 
     //Asks where to play, and ckeck if is already played
     do{
-        printf("\nChoose where you will play: ");
         int tempPos2 = gamemanager -> choosedPos2;
-        while(scanf(" %d", &gamemanager -> choosedPos2) != 1){
-                printf("\nEnter a valid number: ");
-                getchar();
+        if(gamemanager ->nextPlayer != gamemanager->PC){
+                printf("\nChoose where you will play: ");
+
+
+                while(scanf(" %d", &gamemanager -> choosedPos2) != 1){
+                    printf("\nEnter a valid number");
+                    getchar();
+                }
+            }
+
+        else{
+            gamemanager -> choosedPos2 = bestplay(tictactoe, gamemanager->winned, (gamemanager->PC == 1) ? 'X' : 'O');
         }
 
         if(gamemanager -> choosedPos2 == 0){

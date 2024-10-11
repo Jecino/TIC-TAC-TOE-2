@@ -16,7 +16,15 @@ int main()
     srand(time(NULL));
     int r = rand() % 2;
 
+    int pc = rand() % 2;
+
     Tgamemanager gamemanager;
+
+
+
+    for(int i = 0; i < 9; i++){
+        gamemanager.winned[i] == '-';
+    }
 
     do{
         printf("Welcome to the Tic Tac Toe 2!\n\n");
@@ -25,10 +33,32 @@ int main()
 
         switch(rsp){
             case '1':
-                printf("Creating the table...\n");
-                gamemanager.lastPos = -1;
-                sleep(1);
-                rsp = '0';
+                printf("\nWhat type of game?\n1. Player vs Computer\n2. Player vs Player\n");
+                scanf(" %d", &rsp);
+
+                switch(rsp){
+                    case 1:
+                        gamemanager.PC = (r == pc) ? r : pc;
+                        printf("Creating the table...\n");
+                        gamemanager.lastPos = -1;
+                        sleep(1);
+                        rsp = '0';
+                        break;
+
+                    case 2:
+                        gamemanager.PC = -1;
+                        printf("Creating the table...\n");
+                        gamemanager.lastPos = -1;
+                        sleep(1);
+                        rsp = '0';
+                        break;
+
+                    default:
+                        printf("Could not recognize your option, try again\n");
+                        sleep(1);
+                        break;
+                }
+
                 break;
 
             case '2':
