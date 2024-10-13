@@ -9,21 +9,19 @@ int main()
     char rsp = '0';
     char exitingrsp;
     FILE* save;
+    srand(time(0));
 
     initializeTable(tictactoe, '-');
 
     //Random int for choose who begins
-    srand(time(NULL));
-    int r = rand() % 2;
+    int r = randomNumber(2);
 
-    int pc = rand() % 2;
+    int pc = randomNumber(2);
 
     Tgamemanager gamemanager;
 
-
-
     for(int i = 0; i < 9; i++){
-        gamemanager.winned[i] == '-';
+        gamemanager.winned[i] = '-';
     }
 
     do{
@@ -34,18 +32,19 @@ int main()
         switch(rsp){
             case '1':
                 printf("\nWhat type of game?\n1. Player vs Computer\n2. Player vs Player\n");
-                scanf(" %d", &rsp);
+                scanf(" %c", &rsp);
 
                 switch(rsp){
-                    case 1:
+                    case '1':
                         gamemanager.PC = (r == pc) ? r : pc;
                         printf("Creating the table...\n");
                         gamemanager.lastPos = -1;
+                        gamemanager.lastPos2 = -1;
                         sleep(1);
                         rsp = '0';
                         break;
 
-                    case 2:
+                    case '2':
                         gamemanager.PC = -1;
                         printf("Creating the table...\n");
                         gamemanager.lastPos = -1;
@@ -79,7 +78,7 @@ int main()
 
             case '4':
                 printf("Bye :D\n");
-                return;
+                return 0;
 
             default:
                 printf("Could not recognize your option, try again\n");
@@ -114,7 +113,7 @@ int main()
         //Check if the big tic tac toe is winned
 
         for(int i = 0; i < 9; i++){
-            gamemanager.winned[i] = checkWinner(tictactoe, i);
+            gamemanager.winned[i] = checkWinner(tictactoe, i, 0);
         }
 
         if (checkMoves(tictactoe) == 0){
