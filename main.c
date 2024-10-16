@@ -91,7 +91,6 @@ int main()
 
     //gameloop
     while(1){
-
         clear();
         printTable(tictactoe);
 
@@ -113,7 +112,7 @@ int main()
         //Check if the big tic tac toe is winned
 
         for(int i = 0; i < 9; i++){
-            gamemanager.winned[i] = checkWinner(tictactoe, i, 0);
+            gamemanager.winned[i] = checkWinner(tictactoe, i);
         }
 
         if (checkMoves(tictactoe) == 0){

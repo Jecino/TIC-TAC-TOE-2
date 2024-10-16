@@ -26,19 +26,14 @@ int randomNumber(int maximum){
 }
 
 int checkMoves(char tictactoe[][9]){
-    int blocked = 0;
-
-    for(int i = 0; i < 9; i++){
-        if (checkComplete(i, tictactoe) == 1){
-            blocked += 1;
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            if (tictactoe[i][j] == '-') {
+                return 1;
+            }
         }
     }
-
-    if(blocked == 9){
-        return 0;
-    }
-
-    return 1;
+    return 0;
 }
 
 //clear the console in different OS
@@ -128,7 +123,7 @@ void makeComplete(int id, char tictactoe[][9], char value){
 }
 
 //Check if the tictactoe is captured
-char checkWinner(char tictactoe[][9], int id, int usingMinMax){
+char checkWinner(char tictactoe[][9], int id){
     int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
 
     //Will run the rows and collums checking if are captured
@@ -149,11 +144,12 @@ char checkWinner(char tictactoe[][9], int id, int usingMinMax){
             onesCollum += 3;
         }
 
-        if((zerosRow == 3 || zerosCollum == 3) && usingMinMax == 0){
+        if(zerosRow == 3 || zerosCollum == 3){
             makeComplete(id, tictactoe, 'O');
             return 'O';
         }
-        else if((onesRow == 3 || onesCollum == 3) && usingMinMax == 0){
+
+        else if(onesRow == 3 || onesCollum == 3){
             makeComplete(id, tictactoe, 'X');
             return 'X';
         }
@@ -176,14 +172,16 @@ char checkWinner(char tictactoe[][9], int id, int usingMinMax){
     }
 
     //If the row or collum is complete, will call the makecomplete function
-    if(zerosDiag == 3 && usingMinMax == 0){
+    if(zerosDiag == 3){
         makeComplete(id, tictactoe, 'O');
         return 'O';
     }
-    else if(onesDiag == 3 && usingMinMax == 0){
+
+    else if(onesDiag == 3){
         makeComplete(id, tictactoe, 'X');
         return 'X';
     }
+
 
     return '-';
 
@@ -215,7 +213,6 @@ char checkBigWinner(char tictactoe[]){
             return 'O';
         }
         else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
-            return 'X';
         }
 
         zerosDiag = 0;
@@ -235,59 +232,165 @@ char checkBigWinner(char tictactoe[]){
     return '-';
 }
 
-int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe, char PC, int ismax, int deep){
-    int best = 0, score = 0;
-    char player = (PC == 'O') ? 'X' : 'O';
+int evaluateSmallBoard(char board[9], char player) {
+
+    // Count the number of potential winning lines
+
+    int score = 0;
+
+    int lines[][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+
+    for (int i = 0; i < 8; i++) {
+
+        if (board[lines[i][0]] != player && board[lines[i][1]] != player && board[lines[i][2]] != player) {
+
+            int count = (board[lines[i][0]] == '-') + (board[lines[i][1]] == '-') + (board[lines[i][2]] == '-');
+
+            if (count == 3) score += 3;
+
+            else if (count == 2) score += 2;
+
+            else if (count == 1) score += 1; // Potential win
+
+        }
+
+    }
+
+    return score;
+
+}
+
+
+int evaluateBigBoard(char winned[9], char player) {
+
+    // Count the number of potential winning lines
+
+    int score = 0;
+
+    int lines[][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+
+    for (int i = 0; i < 8; i++) {
+
+        if (winned[lines[i][0]] != player && winned[lines[i][1]] != player && winned[lines[i][2]] != player) {
+
+            int count = (winned[lines[i][0]] == '-') + (winned[lines[i][1]] == '-') + (winned[lines[i][2]] == '-');
+
+            if (count == 3) score += 3;
+
+            else if (count == 2) score += 2;
+
+            else if (count == 1) score += 1; // Potential win
+
+        }
+
+    }
+
+    return score;
+
+}
+
+
+int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
+    int score = 0;
     char tempWinner;
+    char player = (PC == 'O') ? 'X' : 'O';
 
-    tempWinner = checkWinner(tictactoe, lastplayed, 0);
-    if(tempWinner == PC){
-        score += 10;
-    }
-    else if (tempWinner == player){
-        score -= 10;
-    }
-    else if (winned[lastplayed] != '-'){
-        score -= 30;
-    }
-    else if(winned[lastplayed] == '-'){
-        score += 30;
+    // Evaluate small boards
+
+    for (int i = 0; i < 9; i++) {
+
+        if (winned[i] == PC) score += 100;
+
+        else if (winned[i] == player) score -= 100;
+
+        else {
+
+            // Evaluate potential wins on small boards
+
+            score += evaluateSmallBoard(tictactoe[i], PC) * 10;
+
+            score -= evaluateSmallBoard(tictactoe[i], player) * 10;
+
+        }
+
     }
 
-    tempWinner = checkBigWinner(winned);
-    if(tempWinner == PC){
-        score += 100;
+
+    // Evaluate big board
+
+    score += evaluateBigBoard(winned, PC) * 1000;
+
+    score -= evaluateBigBoard(winned, player) * 1000;
+
+
+    // Evaluate strategic positions
+
+    int strategicPositions[5] = {0, 2, 4, 6, 8}; // Center and corners
+
+    for (int i = 0; i < 5; i++) {
+
+        if (winned[strategicPositions[i]] == PC) {
+            score += 5;
+        }
+        else if (winned[strategicPositions[i]] == player) {
+            score -= 5;
+        }
     }
-    else if (tempWinner == player){
+
+    if(checkComplete(lastplayed, tictactoe) != 0){
         score -= 100;
     }
 
-    if(score >= 100){
-        return score - deep;
-    }
+    return score;
+}
 
-    if(score <= -100){
+int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe, char PC, int ismax, int deep, int alpha, int beta){
+    int best = 0, score = 0, currentScore = 0;
+    char player = (PC == 'O') ? 'X' : 'O';
+
+    score = ValuatePlay(PC, tictactoe, winned, lastplayed);
+
+    if(score >= 200){
         return score + deep;
     }
 
-    if(checkMoves(tictactoe) == 0 || deep == 0){
+    if(score <= -200){
         return score - deep;
     }
+
+    if(checkBigWinner(winned) != '-' || deep == 0){
+        printf("Leaf node: depth %d, score %d\n", deep, score);
+        return score - deep;
+    }
+
+    printf("Evaluating depth %d\n", deep);
 
     if(ismax == 1){
         best =  -1000;
         for(int i = 0; i < 9; i++){
 
-            if(bigtictactoe == 1 && winned[i] != '-'){
-                continue;
-            }
-
              if(tictactoe[lastplayed][i] == '-'){
                 tictactoe[lastplayed][i] = PC;
-                best = best > minmax(tictactoe, winned, i, 0, PC, 0, deep - 1) ? best : minmax(tictactoe, winned, i, 0, PC, 0, deep - 1);
+                char old_winned = winned[i];
+                winned[i] = checkWinner(tictactoe, i);
+
+                currentScore = minmax(tictactoe, winned, i, 0, PC, 0, deep - 1, alpha, beta);
+                best = best > currentScore ? best : currentScore;
+
                 tictactoe[lastplayed][i] = '-';
+                winned[i] = old_winned;
+                alpha = alpha > best ? alpha : best;  // Atualiza alpha
+
+                if(alpha >= beta) {
+                    printf("Pruning at depth %d\n", deep);
+                    break;  // Poda
+                }
+                printf("Depth %d, Move [%d, %d], Score %d, Best %d\n", deep, lastplayed, i, score, best);
+
             }
+
         }
+
         return best;
     }
 
@@ -296,15 +399,22 @@ int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe
         best = 1000;
         for(int i = 0; i < 9; i++){
 
-            if(bigtictactoe == 1 && winned[i] != '-'){
-                continue;
-            }
-
             if(tictactoe[lastplayed][i] == '-'){
                 tictactoe[lastplayed][i] = player;
-                best = best < minmax(tictactoe, winned, i, 0, PC, 1, deep - 1) ? best : minmax(tictactoe, winned, i, 0, PC, 1, deep - 1);
+                char old_winned = winned[i];
+                winned[i] = checkWinner(tictactoe, i);
+
+                currentScore = minmax(tictactoe, winned, i, 0, PC, 1, deep - 1, alpha, beta);
+                best = best < currentScore ? best : currentScore;
                 tictactoe[lastplayed][i] = '-';
+                winned[i] = old_winned;
+                beta = beta < best ? beta : best;
+
+                    if(beta <= alpha) {
+                        break;  // Poda
+                    }
             }
+
         }
     return best;
     }
@@ -316,20 +426,34 @@ int bestplay(char tictactoe[][9], int lastplayed, char winned[9], char pc, int b
 
     for(int j = 0; j < 9; j++){
 
-        if(bigtictactoe == 1 && winned[j] != '-'){
-                continue;
-        }
-
-        if(tictactoe[lastplayed][j] == '-'){
+        if(tictactoe[lastplayed][j] == '-' && bigtictactoe == 0){
 
             tictactoe[lastplayed][j] = pc;
-            playvalue = minmax(tictactoe, winned, lastplayed, bigtictactoe, pc, 0, 5);
+            playvalue = minmax(tictactoe, winned, lastplayed, bigtictactoe, pc, 1, 10, -1000, 1000);
             tictactoe[lastplayed][j] = '-';
 
             if(playvalue > bestvalue){
                 bestplace = j;
                 bestvalue = playvalue;
             }
+        }
+
+        else if (bigtictactoe == 1){
+            for(int i = 0; i < 9; i++){
+                if(winned[j] != '-'){
+                    continue;
+                }
+
+                tictactoe[j][i] = pc;
+                playvalue = minmax(tictactoe, winned, i, bigtictactoe, pc, 0, 10, -1000, 1000);
+                tictactoe[j][i] = '-';
+
+                if(playvalue > bestvalue){
+                    bestplace = j;
+                    bestvalue = playvalue;
+                }
+            }
+
         }
     }
     return bestplace + 1;
@@ -379,12 +503,15 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
                 }
                 else{
                     char copiedtable[9][9];
+                    char copiedWinned[9];
                     for(int i = 0; i < 9; i++){
+                            copiedWinned[i] == gamemanager->winned[i];
                         for(int j = 0; j < 9; j++){
                             copiedtable[i][j] = tictactoe[i][j];
                         }
                     }
-                    gamemanager -> choosedPos = bestplay(copiedtable, gamemanager->lastPos2 - 1,gamemanager->winned, (gamemanager->PC == 1) ? 'X' : 'O', 1);
+                    gamemanager -> choosedPos = bestplay(copiedtable, gamemanager->lastPos2 - 1, copiedWinned, (gamemanager->PC == 1) ? 'X' : 'O', 1);
+                    choosedBigTicTacToe = 1;
                 }
             }
 
@@ -439,12 +566,20 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
             }
             else{
                 char copiedtable[9][9];
+                char copiedWinned[9];
                     for(int i = 0; i < 9; i++){
+                            copiedWinned[i] = gamemanager->winned[i];
                         for(int j = 0; j < 9; j++){
                             copiedtable[i][j] = tictactoe[i][j];
                         }
                     }
-                gamemanager -> choosedPos2 = bestplay(copiedtable, gamemanager->lastPos2 - 1,gamemanager->winned, (gamemanager->PC == 1) ? 'X' : 'O', 0);
+
+                    if(choosedBigTicTacToe == 1){
+                        gamemanager -> choosedPos2 = bestplay(copiedtable, gamemanager->choosedPos - 1, copiedWinned, (gamemanager->PC == 1) ? 'X' : 'O', 0);
+                    }
+                    else{
+                        gamemanager -> choosedPos2 = bestplay(copiedtable, gamemanager->lastPos2 - 1, copiedWinned, (gamemanager->PC == 1) ? 'X' : 'O', 0);
+                    }
             }
 
         }
@@ -488,10 +623,10 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
     }
 
     if(gamemanager -> lastPos == -1 || choosedBigTicTacToe == 1){
-        checkWinner(tictactoe, gamemanager -> choosedPos - 1, 0);
+        checkWinner(tictactoe, gamemanager -> choosedPos - 1);
     }
     else{
-        checkWinner(tictactoe, gamemanager -> lastPos2 - 1, 0);
+        checkWinner(tictactoe, gamemanager -> lastPos2 - 1);
     }
 
     //Variable's update
