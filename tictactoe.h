@@ -122,119 +122,53 @@ void makeComplete(int id, char tictactoe[][9], char value){
     }
 }
 
-//Check if the tictactoe is captured
-char checkWinner(char tictactoe[][9], int id){
-    int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
+//Check winning in the small board
+char checkWinner(char board[][9], int id){
 
-    //Will run the rows and collums checking if are captured
-    for (int i = 0; i < 3; i++){
-        if(tictactoe[id][i*3] == 'O' && tictactoe[id][i*3+1] == 'O' && tictactoe[id][i*3+2] == 'O'){
-            zerosRow += 3;
-        }
-        else if(tictactoe[id][i*3] == 'X' && tictactoe[id][i*3+1] == 'X' && tictactoe[id][i*3+2] == 'X'){
-            onesRow += 3;
-        }
+    //List of lines, collums and diagonals to check
 
-        //Check the collums
+    int lines[][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
 
-        if(tictactoe[id][i] == 'O' && tictactoe[id][i+3] == 'O' && tictactoe[id][i+6] == 'O'){
-            zerosCollum += 3;
-        }
-        else if(tictactoe[id][i] == 'X' && tictactoe[id][i+3] == 'X' && tictactoe[id][i+6] == 'X'){
-            onesCollum += 3;
-        }
+    for (int i = 0; i < 8; i++) {
 
-        if(zerosRow == 3 || zerosCollum == 3){
-            makeComplete(id, tictactoe, 'O');
+        if (board[id][lines[i][0]] == 'X' && board[id][lines[i][1]] == 'X' && board[id][lines[i][2]] == 'X') {
+            makeComplete(id, board, 'X');
+            return 'X';
+        }
+        else if (board[id][lines[i][0]] == 'O' && board[id][lines[i][1]] == 'O' && board[id][lines[i][2]] == 'O'){
+            makeComplete(id, board, 'O');
             return 'O';
         }
 
-        else if(onesRow == 3 || onesCollum == 3){
-            makeComplete(id, tictactoe, 'X');
-            return 'X';
-        }
     }
-
-    //Checks the diagonals
-
-    if(tictactoe[id][0] == 'O' && tictactoe[id][4] == 'O' && tictactoe[id][8] == 'O'){
-        zerosDiag += 3;
-    }
-    else if(tictactoe[id][0] == 'X' && tictactoe[id][4] == 'X' && tictactoe[id][8] == 'X'){
-        onesDiag += 3;
-    }
-
-    if(tictactoe[id][2] == 'O' && tictactoe[id][4] == 'O' && tictactoe[id][6] == 'O'){
-        zerosDiag += 3;
-    }
-    else if(tictactoe[id][2] == 'X' && tictactoe[id][4] == 'X' && tictactoe[id][6] == 'X'){
-        onesDiag += 3;
-    }
-
-    //If the row or collum is complete, will call the makecomplete function
-    if(zerosDiag == 3){
-        makeComplete(id, tictactoe, 'O');
-        return 'O';
-    }
-
-    else if(onesDiag == 3){
-        makeComplete(id, tictactoe, 'X');
-        return 'X';
-    }
-
 
     return '-';
-
 }
 
-//Check big winning
-char checkBigWinner(char tictactoe[]){
-    int zerosRow = 0, zerosCollum = 0, onesRow = 0, onesCollum = 0, zerosDiag = 0, onesDiag = 0;
+//Check winning in big board
+char checkBigWinner(char board[]){
 
-    //Will run the rows and collums checking if are captured
-    for (int i = 0; i < 3; i++){
+    //List of lines, collums and diagonals to check
 
-        //Check the rows
+    int lines[][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
 
-        zerosRow = (tictactoe[i*3] == 'O') + (tictactoe[i*3+1] == 'O') + (tictactoe[i*3+2] == 'O');
-        onesRow = (tictactoe[i*3] == 'X') + (tictactoe[i*3+1] == 'X') + (tictactoe[i*3+2] == 'X');
+    for (int i = 0; i < 8; i++) {
 
-        //Check the collums
-
-        zerosCollum = (tictactoe[i] == 'O') + (tictactoe[i+3] == 'O') + (tictactoe[i+6] == 'O');
-        onesCollum = (tictactoe[i] == 'X') + (tictactoe[i+3] == 'X') + (tictactoe[i+6] == 'X');
-
-        //Checks the diagonals
-
-        zerosDiag = (tictactoe[0] == 'O') + (tictactoe[4] == 'O') + (tictactoe[8] == 'O');
-        onesDiag = (tictactoe[0] == 'X') + (tictactoe[4] == 'X') + (tictactoe[8] == 'X');
-
-        if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
-            return 'O';
-        }
-        else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
-        }
-
-        zerosDiag = 0;
-        onesDiag = 0;
-
-        zerosDiag = (tictactoe[2] == 'O') + (tictactoe[4] == 'O') + (tictactoe[6] == 'O');
-        onesDiag = (tictactoe[2] == 'X') + (tictactoe[4] == 'X') + (tictactoe[6] == 'X');
-
-        //If the row or collum is complete
-        if(zerosRow == 3 || zerosCollum == 3 || zerosDiag == 3){
-            return 'O';
-        }
-        else if(onesRow == 3 || onesCollum == 3 || onesDiag == 3){
+        if (board[lines[i][0]] == 'X' && board[lines[i][1]] == 'X' && board[lines[i][2]] == 'X') {
             return 'X';
         }
+        else if (board[lines[i][0]] == 'O' && board[lines[i][1]] == 'O' && board[lines[i][2]] == 'O'){
+            return 'O';
+        }
+
     }
+
     return '-';
 }
 
 int evaluateSmallBoard(char board[9], char player) {
 
-    // Count the number of potential winning lines
+    //Count the number of potential winning lines
 
     int score = 0;
 
@@ -246,12 +180,17 @@ int evaluateSmallBoard(char board[9], char player) {
 
             int count = (board[lines[i][0]] == '-') + (board[lines[i][1]] == '-') + (board[lines[i][2]] == '-');
 
-            if (count == 3) score += 3;
+            if (count == 3){
+                score += 3;
+            }
 
-            else if (count == 2) score += 2;
+            else if (count == 2){
+                score += 2;
+            }
 
-            else if (count == 1) score += 1; // Potential win
-
+            else if (count == 1){
+                score += 1; // Potential win
+            }
         }
 
     }
@@ -275,12 +214,17 @@ int evaluateBigBoard(char winned[9], char player) {
 
             int count = (winned[lines[i][0]] == '-') + (winned[lines[i][1]] == '-') + (winned[lines[i][2]] == '-');
 
-            if (count == 3) score += 3;
+            if (count == 3){
+                score += 3;
+            }
 
-            else if (count == 2) score += 2;
+            else if (count == 2){
+                score += 2;
+            }
 
-            else if (count == 1) score += 1; // Potential win
-
+            else if (count == 1){
+                score += 1; // Potential win
+            }
         }
 
     }
@@ -289,13 +233,12 @@ int evaluateBigBoard(char winned[9], char player) {
 
 }
 
-
 int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
     int score = 0;
     char tempWinner;
     char player = (PC == 'O') ? 'X' : 'O';
 
-    // Evaluate small boards
+    //Evaluate small boards
 
     for (int i = 0; i < 9; i++) {
 
@@ -305,7 +248,7 @@ int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
 
         else {
 
-            // Evaluate potential wins on small boards
+            //Evaluate potential wins on small boards
 
             score += evaluateSmallBoard(tictactoe[i], PC) * 10;
 
@@ -316,14 +259,14 @@ int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
     }
 
 
-    // Evaluate big board
+    //Evaluate big board
 
     score += evaluateBigBoard(winned, PC) * 1000;
 
     score -= evaluateBigBoard(winned, player) * 1000;
 
 
-    // Evaluate strategic positions
+    //Evaluate strategic positions
 
     int strategicPositions[5] = {0, 2, 4, 6, 8}; // Center and corners
 
@@ -337,8 +280,10 @@ int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
         }
     }
 
+    //Try not play in a already winned board
+
     if(checkComplete(lastplayed, tictactoe) != 0){
-        score -= 100;
+        score -= 300;
     }
 
     return score;
@@ -350,20 +295,17 @@ int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe
 
     score = ValuatePlay(PC, tictactoe, winned, lastplayed);
 
-    if(score >= 200){
+    if(score >= 300){
         return score + deep;
     }
 
-    if(score <= -200){
+    if(score <= -300){
         return score - deep;
     }
 
     if(checkBigWinner(winned) != '-' || deep == 0){
-        printf("Leaf node: depth %d, score %d\n", deep, score);
         return score - deep;
     }
-
-    printf("Evaluating depth %d\n", deep);
 
     if(ismax == 1){
         best =  -1000;
@@ -379,13 +321,11 @@ int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe
 
                 tictactoe[lastplayed][i] = '-';
                 winned[i] = old_winned;
-                alpha = alpha > best ? alpha : best;  // Atualiza alpha
+                alpha = alpha > best ? alpha : best;
 
                 if(alpha >= beta) {
-                    printf("Pruning at depth %d\n", deep);
-                    break;  // Poda
+                    break;
                 }
-                printf("Depth %d, Move [%d, %d], Score %d, Best %d\n", deep, lastplayed, i, score, best);
 
             }
 
@@ -410,9 +350,9 @@ int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe
                 winned[i] = old_winned;
                 beta = beta < best ? beta : best;
 
-                    if(beta <= alpha) {
-                        break;  // Poda
-                    }
+                if(beta <= alpha) {
+                    break;
+                }
             }
 
         }
@@ -429,7 +369,7 @@ int bestplay(char tictactoe[][9], int lastplayed, char winned[9], char pc, int b
         if(tictactoe[lastplayed][j] == '-' && bigtictactoe == 0){
 
             tictactoe[lastplayed][j] = pc;
-            playvalue = minmax(tictactoe, winned, lastplayed, bigtictactoe, pc, 1, 10, -1000, 1000);
+            playvalue = minmax(tictactoe, winned, lastplayed, bigtictactoe, pc, 1, 5, -1000, 1000);
             tictactoe[lastplayed][j] = '-';
 
             if(playvalue > bestvalue){
@@ -445,7 +385,7 @@ int bestplay(char tictactoe[][9], int lastplayed, char winned[9], char pc, int b
                 }
 
                 tictactoe[j][i] = pc;
-                playvalue = minmax(tictactoe, winned, i, bigtictactoe, pc, 0, 10, -1000, 1000);
+                playvalue = minmax(tictactoe, winned, i, bigtictactoe, pc, 0, 5, -1000, 1000);
                 tictactoe[j][i] = '-';
 
                 if(playvalue > bestvalue){
