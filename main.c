@@ -9,14 +9,20 @@ int main()
     char rsp = '0';
     char exitingrsp;
     FILE* save;
+    srand(time(0));
 
     initializeTable(tictactoe, '-');
 
     //Random int for choose who begins
-    srand(time(NULL));
-    int r = rand() % 2;
+    int r = randomNumber(2);
+
+    int pc = randomNumber(2);
 
     Tgamemanager gamemanager;
+
+    for(int i = 0; i < 9; i++){
+        gamemanager.winned[i] = '-';
+    }
 
     do{
         printf("Welcome to the Tic Tac Toe 2!\n\n");
@@ -25,10 +31,33 @@ int main()
 
         switch(rsp){
             case '1':
-                printf("Creating the table...\n");
-                gamemanager.lastPos = -1;
-                sleep(1);
-                rsp = '0';
+                printf("\nWhat type of game?\n1. Player vs Computer\n2. Player vs Player\n");
+                scanf(" %c", &rsp);
+
+                switch(rsp){
+                    case '1':
+                        gamemanager.PC = (r == pc) ? r : pc;
+                        printf("Creating the table...\n");
+                        gamemanager.lastPos = -1;
+                        gamemanager.lastPos2 = -1;
+                        sleep(1);
+                        rsp = '0';
+                        break;
+
+                    case '2':
+                        gamemanager.PC = -1;
+                        printf("Creating the table...\n");
+                        gamemanager.lastPos = -1;
+                        sleep(1);
+                        rsp = '0';
+                        break;
+
+                    default:
+                        printf("Could not recognize your option, try again\n");
+                        sleep(1);
+                        break;
+                }
+
                 break;
 
             case '2':
@@ -49,7 +78,7 @@ int main()
 
             case '4':
                 printf("Bye :D\n");
-                return;
+                return 0;
 
             default:
                 printf("Could not recognize your option, try again\n");
@@ -62,7 +91,6 @@ int main()
 
     //gameloop
     while(1){
-
         clear();
         printTable(tictactoe);
 
@@ -87,20 +115,26 @@ int main()
             gamemanager.winned[i] = checkWinner(tictactoe, i);
         }
 
+        if (checkMoves(tictactoe) == 0){
+            clear();
+            printTable(tictactoe);
+            printf("It's a draw!\n");
+            break;
+        }
+
         if(checkBigWinner(gamemanager.winned)!= '-'){
             if(gamemanager.lastPlayer == 0){
+                clear();
+                printTable(tictactoe);
                 printf("The \"O\" is the winner!\n");
                 break;
             }
             else if (gamemanager.lastPlayer == 1){
+                clear();
+                printTable(tictactoe);
                 printf("The \"X\" is the winner!\n");
                 break;
             }
-            else{
-                printf("It's a draw!\n");
-                break;
-            }
-
         }
 
         if(gamemanager.exited == 1){
