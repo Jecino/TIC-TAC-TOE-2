@@ -5,7 +5,7 @@
 typedef struct{
     int lastPos, choosedPos, lastPos2, choosedPos2, lastPlayer, nextPlayer, exited;
     char winned[9];
-    char PC;
+    int PC;
 
 } Tgamemanager;
 
@@ -596,7 +596,7 @@ void saveGame(Tgamemanager gamemanager, char tictactoe[][9]){
         fprintf(save, "\n");
     }
 
-    fprintf(save, "%d %d %d %d %d %d\n", gamemanager.choosedPos2, gamemanager.choosedPos, gamemanager.lastPlayer, gamemanager.lastPos2, gamemanager.lastPos, gamemanager.nextPlayer);
+    fprintf(save, "%d %d %d %d %d %d %d\n", gamemanager.choosedPos2, gamemanager.choosedPos, gamemanager.lastPlayer, gamemanager.lastPos2, gamemanager.lastPos, gamemanager.nextPlayer, gamemanager.PC);
 
     for(int i = 0; i < 9; i++){
         fprintf(save, "%c", gamemanager.winned[i]);
@@ -619,7 +619,7 @@ void loadGame(FILE* load, Tgamemanager *gamemanager, char tictactoe[][9]){
         fscanf(load, "\n");
     }
 
-    fscanf(load, "%d %d %d %d %d %d\n", &gamemanager -> choosedPos2, &gamemanager -> choosedPos, &gamemanager -> lastPlayer, &gamemanager -> lastPos2, &gamemanager -> lastPos, &gamemanager -> nextPlayer);
+    fscanf(load, "%d %d %d %d %d %d %d\n", &gamemanager -> choosedPos2, &gamemanager -> choosedPos, &gamemanager -> lastPlayer, &gamemanager -> lastPos2, &gamemanager -> lastPos, &gamemanager -> nextPlayer, &gamemanager->PC);
 
     for(int i = 0; i < 9; i++){
         fscanf(load, "%c", &gamemanager -> winned[i]);
