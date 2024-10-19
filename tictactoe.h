@@ -295,11 +295,11 @@ int minmax(char tictactoe[][9], char winned[9], int lastplayed, int bigtictactoe
 
     score = ValuatePlay(PC, tictactoe, winned, lastplayed);
 
-    if(score >= 300){
+    if(score >= 200){
         return score + deep;
     }
 
-    if(score <= -300){
+    else if(score <= -200){
         return score - deep;
     }
 
@@ -379,13 +379,16 @@ int bestplay(char tictactoe[][9], int lastplayed, char winned[9], char pc, int b
         }
 
         else if (bigtictactoe == 1){
-            for(int i = 0; i < 9; i++){
-                if(winned[j] != '-'){
+
+            if(winned[j] != '-'){
                     continue;
                 }
 
+            for(int i = 0; i < 9; i++){
+
+
                 tictactoe[j][i] = pc;
-                playvalue = minmax(tictactoe, winned, i, bigtictactoe, pc, 0, 5, -1000, 1000);
+                playvalue = minmax(tictactoe, winned, i, 0, pc, 0, 5, -1000, 1000);
                 tictactoe[j][i] = '-';
 
                 if(playvalue > bestvalue){
@@ -445,7 +448,7 @@ void jogada(Tgamemanager *gamemanager, int actualPlayer, int ChooseBigTicTacToe)
                     char copiedtable[9][9];
                     char copiedWinned[9];
                     for(int i = 0; i < 9; i++){
-                            copiedWinned[i] == gamemanager->winned[i];
+                            copiedWinned[i] = gamemanager -> winned[i];
                         for(int j = 0; j < 9; j++){
                             copiedtable[i][j] = tictactoe[i][j];
                         }
