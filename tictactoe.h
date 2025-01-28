@@ -235,7 +235,6 @@ int evaluateBigBoard(char winned[9], char player) {
 
 int ValuatePlay(char PC, char tictactoe[][9], char winned[9], int lastplayed){
     int score = 0;
-    char tempWinner;
     char player = (PC == 'O') ? 'X' : 'O';
 
     //Evaluate small boards
