@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "tictactoe.h"
+#include "../headers/tictactoe.h"  
 
 int main()
 {
@@ -154,5 +154,5 @@ int main()
             break;
         }
     }
-
+    return 0;
 }
